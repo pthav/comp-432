@@ -1,47 +1,74 @@
-
 #ifndef STACK_H
 #define STACK_H
 
 // this is the node class used to build up the LIFO stack
 template <class Data>
-class Node {
-
+class Node
+{
 private:
+    Data holdMe;
+    Node* next;
 
-	Data holdMe;
-	Node *next;
-	
 public:
+    ~Node() { delete next; }
 
-	/*****************************************/
-	/** WHATEVER CODE YOU NEED TO ADD HERE!! */
-	/*****************************************/
+    explicit Node(Data holdMe) : holdMe(holdMe), next(nullptr)
+    {
+    }
 
+    void SetNext(Node* n)
+    {
+        next = n;
+    }
+
+    Node* GetNext()
+    {
+        return next;
+    }
+
+    Data GetData()
+    {
+        return holdMe;
+    }
 };
 
 // a simple LIFO stack
-template <class Data> 
-class Stack {
-
-	Node <Data> *head;
+template <class Data>
+class Stack
+{
+    Node<Data>* head;
 
 public:
+    // destroys the stack
+    ~Stack() { delete head; }
 
-	// destroys the stack
-	~Stack () { /* your code here */ }
+    // creates an empty stack
+    Stack() : head{nullptr}
+    {
+    }
 
-	// creates an empty stack
-	Stack () { /* your code here */ }
+    // adds pushMe to the top of the stack
+    void push(Data d)
+    {
+        Node<Data>* newNode = new Node<Data>(d);
+        newNode->SetNext(head);
+        head = newNode;
+    }
 
-	// adds pushMe to the top of the stack
-	void push (Data) { /* your code here */ }
+    // return true if there are not any items in the stack
+    bool isEmpty() { return head == nullptr; }
 
-	// return true if there are not any items in the stack
-	bool isEmpty () { /* replace with your code */ return true; }
-
-	// pops the item on the top of the stack off, returning it...
-	// if the stack is empty, the behavior is undefined
-	Data pop () { /* replace with your code */ return Data ();  }
+    // pops the item on the top of the stack off, returning it...
+    // if the stack is empty, the behavior is undefined
+    Data pop()
+    {
+        Node<Data>* nextNode = head->GetNext();
+        head->SetNext(nullptr);
+        Data d = head->GetData();
+        delete head;
+        head = nextNode;
+        return d;
+    }
 };
 
 #endif
