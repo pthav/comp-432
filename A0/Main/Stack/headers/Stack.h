@@ -10,9 +10,9 @@ private:
     Node* next;
 
 public:
-    ~Node() { delete next; }
+    ~Node() = default;
 
-    explicit Node(Data holdMe) : holdMe(holdMe), next(nullptr)
+    Node(const Data& holdMe) : holdMe(holdMe), next(nullptr)
     {
     }
 
@@ -40,7 +40,15 @@ class Stack
 
 public:
     // destroys the stack
-    ~Stack() { delete head; }
+    ~Stack()
+    {
+        while (head != nullptr)
+        {
+            Node<Data>* curr = head;
+            head = head->GetNext();
+            delete curr;
+        }
+    }
 
     // creates an empty stack
     Stack() : head{nullptr}
@@ -48,7 +56,7 @@ public:
     }
 
     // adds pushMe to the top of the stack
-    void push(Data d)
+    void push(const Data& d)
     {
         Node<Data>* newNode = new Node<Data>(d);
         newNode->SetNext(head);
@@ -62,6 +70,11 @@ public:
     // if the stack is empty, the behavior is undefined
     Data pop()
     {
+        if (isEmpty())
+        {
+            return Data{};
+        }
+
         Node<Data>* nextNode = head->GetNext();
         head->SetNext(nullptr);
         Data d = head->GetData();

@@ -6,6 +6,7 @@
 #include "Stack.h"
 #include <memory>
 #include <iostream>
+#include <vector>
 
 int main () {
 
@@ -14,7 +15,7 @@ int main () {
 	// UNIT TEST 1
 	// just make sure we can create an empty stack, and that it is empty
 	{
-		
+
 		Stack <int> myStack;
 		QUNIT_IS_EQUAL (myStack.isEmpty (), true);
 
@@ -77,6 +78,32 @@ int main () {
 			QUNIT_IS_EQUAL (myStack.pop (), 19 - i);
 		}
 		
+		QUNIT_IS_EQUAL (myStack.isEmpty (), true);
+	}
+
+	// UNIT TEST 5
+	// Test push/pop with a bunch of strings
+	{
+
+		Stack <std::string> myStack;
+		std::vector<std::string> strings{"a","b","cd","efg","hi","jklm","nop","q","rs","tuvwxyz"};
+
+		for (int i = 0; i < 10; i++) {
+			myStack.push(strings[i]);
+		}
+
+		for (int i = 0; i < 5; i++) {
+			QUNIT_IS_EQUAL (myStack.pop (), strings[9 - i]);
+		}
+
+		for (int i = 5; i < 10; i++) {
+			myStack.push (strings[i]);
+		}
+
+		for (int i = 0; i < 10; i++) {
+			QUNIT_IS_EQUAL (myStack.pop (), strings[9 - i]);
+		}
+
 		QUNIT_IS_EQUAL (myStack.isEmpty (), true);
 	}
 }
