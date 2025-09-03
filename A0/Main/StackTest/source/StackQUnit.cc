@@ -106,6 +106,21 @@ int main () {
 
 		QUNIT_IS_EQUAL (myStack.isEmpty (), true);
 	}
+
+	// UNIT TEST 6
+	// Test push/pop with vectors of int
+	{
+		Stack <std::vector<int>> myStack;
+		std::vector<std::vector<int>> vectors{{0,2},{0,32},{-1},{56,704}};
+
+		for (int i = 0; i < 4; i++) {
+			myStack.push(vectors[i]);
+		}
+
+		for (int i = 0; i < 4; i++) {
+			QUNIT_IS_TRUE(myStack.pop() == vectors[3-i]);
+		}
+	}
 }
 
 #endif
